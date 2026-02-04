@@ -2,7 +2,7 @@ import sys
 sys.dont_write_bytecode = True
 
 import tkinter as tk
-from app import Main
+from app import App
 from utils.db import FinanceDB
 
 
@@ -13,7 +13,7 @@ if __name__ == '__main__':
     root.resizable(False, False)
 
     db = FinanceDB()
-    app = Main(root, db)
+    app = App(root, db)
     app.pack(fill=tk.BOTH, expand=True)
 
     root.mainloop()

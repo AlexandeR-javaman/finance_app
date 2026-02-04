@@ -4,7 +4,7 @@ from views.toolbar import Toolbar
 from views.dialogs import AddDialog, EditDialog
 
 
-class Main(tk.Frame):
+class App(tk.Frame):
     def __init__(self, root, db):
         super().__init__(root)
         self.db = db
