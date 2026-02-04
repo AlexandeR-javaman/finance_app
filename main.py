@@ -1,3 +1,6 @@
+import sys
+sys.dont_write_bytecode = True
+
 import tkinter as tk
 from app import Main
 from utils.db import FinanceDB
