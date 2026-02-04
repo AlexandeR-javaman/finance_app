@@ -1,3 +1,4 @@
+from pathlib import Path
 import tkinter as tk
 
 
@@ -6,7 +7,7 @@ class Toolbar(tk.Frame):
         super().__init__(parent, bg='#d7d8e0', bd=2)
         self.callbacks = callbacks
         self._init_ui()
-
+    
     def _init_ui(self):
         buttons = [
             ('add.png', 'Добавить', self.callbacks['add']),
@@ -15,10 +16,21 @@ class Toolbar(tk.Frame):
             ('refresh.png', 'Обновить', self.callbacks['refresh']),
         ]
 
+        # путь к картинкам динамический относительно текущей папки
+        # Получаем путь к текущей директории (где лежит скрипт)
+        current_dir = Path(__file__).parent  # ..\VS Code\finance_app\views
+
+        # Поднимаемся на уровень выше (в finance_app)
+        parent_dir = current_dir.parent  # ..\VS Code\finance_app
+
+        # Формируем путь к нужной папке
+        img_dir = parent_dir / "resources" / "icons"
+
         self.images = []
         self.buttons = {} # для создания словаря кнопок, чтобы потом можно было изменить цвет или заблокировать отдельные кнопки
-        for img, text, cmd in buttons:
-            image = tk.PhotoImage(file=img)
+        for img_file, text, cmd in buttons:
+            img_path = img_dir / img_file
+            image = tk.PhotoImage(file=str(img_path))
             self.images.append(image)
             btn = tk.Button(
             # tk.Button( #если не надо помещать кнопки в словарь, то можно объявлять их без присваивания переменной
