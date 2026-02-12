@@ -5,18 +5,20 @@ from views.dialogs import AddDialog, EditDialog
 
 
 class App(tk.Frame):
-    def __init__(self, root, db):
+    def __init__(self, root):
         super().__init__(root)
-        self.db = db
+        self.presenter = None
         self._init_ui()
-        self.refresh()
+
+    def set_presenter(self, presenter):
+        self.presenter = presenter
 
     def _init_ui(self):
         self.toolbar = Toolbar(self, {
-            'add': self.open_add,
-            'edit': self.open_edit,
-            'delete': self.delete_record,
-            'refresh': self.refresh
+            'add': lambda: self.presenter.open_add(),
+            'edit': lambda: self.presenter.open_edit(),
+            'delete': lambda: self.presenter.delete_record(),
+            'refresh': lambda: self.presenter.refresh()
         })
         self.toolbar.pack(fill=tk.X)
 
@@ -36,32 +38,27 @@ class App(tk.Frame):
             self.tree.column(col, width=width, anchor=tk.CENTER)
 
         self.tree.pack(fill=tk.BOTH, expand=True)
+# ===== Методы отображения =====
 
-    def refresh(self):
+    def show_records(self, records):
         self.tree.delete(*self.tree.get_children())
-        for row in self.db.fetch_all():
+        for row in records:
             self.tree.insert('', tk.END, values=row)
 
-    def open_add(self):
-        AddDialog(self, self.add_record, "Добавить!")
-
-    def open_edit(self):
+    def get_selected(self):
         selected = self.tree.selection()
         if not selected:
-            return
-        record = self.tree.item(selected[0])['values']
-        EditDialog(self, record, self.edit_record, "Применить!")
+            return None
+        return self.tree.item(selected[0])['values']
 
-    def add_record(self, description, costs, total):
-        self.db.add(description, costs, total)
-        self.refresh()
-
-    def edit_record(self, record_id, description, costs, total):
-        self.db.update(record_id, description, costs, total)
-        self.refresh()
-
-    def delete_record(self):
+    def get_selected_ids(self):
+        ids = []
         for item in self.tree.selection():
-            record_id = self.tree.item(item)['values'][0]
-            self.db.delete(record_id)
-        self.refresh()
+            ids.append(self.tree.item(item)['values'][0])
+        return ids
+
+    def open_add_dialog(self):
+        AddDialog(self, self.presenter.add_record, "Добавить!")
+
+    def open_edit_dialog(self, record):
+        EditDialog(self, record, self.presenter.edit_record, "Применить!")
