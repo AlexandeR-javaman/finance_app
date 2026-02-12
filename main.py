@@ -3,7 +3,7 @@ sys.dont_write_bytecode = True
 
 import tkinter as tk
 from app import App
-from utils.db import FinanceDB
+from repositories.sqlite_finance_repository import SQLiteFinanceRepository
 
 
 if __name__ == '__main__':
@@ -12,7 +12,7 @@ if __name__ == '__main__':
     root.geometry('650x450+300+200')
     root.resizable(False, False)
 
-    db = FinanceDB()
+    db = SQLiteFinanceRepository()
     app = App(root, db)
     app.pack(fill=tk.BOTH, expand=True)
 

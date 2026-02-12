@@ -1,7 +1,9 @@
 import sqlite3
 
+from repositories.finance_repository import FinanceRepository
 
-class FinanceDB:
+
+class SQLiteFinanceRepository(FinanceRepository):
     def __init__(self, db_name='finance.db'):
         self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
