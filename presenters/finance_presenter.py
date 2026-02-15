@@ -16,6 +16,8 @@ class FinancePresenter:
             return
         self.view.open_edit_dialog(record)
 
+    # ===== CRUD =====
+
     def add_record(self, description, costs, total):
         self.repository.add(description, costs, total)
         self.refresh()

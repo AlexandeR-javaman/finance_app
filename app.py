@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from views.toolbar import Toolbar
-from views.dialogs import AddDialog, EditDialog
+from views.dialogs.add_dialog import AddDialog
+from views.dialogs.edit_dialog import EditDialog
 
 
 class App(tk.Frame):
@@ -38,6 +39,7 @@ class App(tk.Frame):
             self.tree.column(col, width=width, anchor=tk.CENTER)
 
         self.tree.pack(fill=tk.BOTH, expand=True)
+
 # ===== Методы отображения =====
 
     def show_records(self, records):
